@@ -10,9 +10,9 @@ class _WorldwideState extends State<Worldwide> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: new EdgeInsets.all(32.0),
+        //padding: new EdgeInsets.all(32.0),
         child: new Center(
-          child: new Column(
+          child: new ListView(
             children: <Widget>[
               new Card(
                 child: new Container(

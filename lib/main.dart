@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
 DefaultTabController tabs(){
   return DefaultTabController(
-    length: 3,
+    length: 2,
     child: new Scaffold(
       body: TabBarView(
         children: <Widget>[
