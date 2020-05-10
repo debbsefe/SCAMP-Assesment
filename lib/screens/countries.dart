@@ -11,24 +11,41 @@ class Country extends StatefulWidget {
 class _CountryState extends State<Country> {
   
 
-// List <Countries> countryList = new List();
-//   void initState(){
-//     _getApi();
-//     super.initState();
-//   }
+//List <Countries> countryList = new List();
+
+Future<Countries> countries;
+  void initState(){
+    _getApi();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: countryList.length, 
-        itemBuilder: (context, index){
-          return ListTile(title: Text(countryList[index].totalConfirmed.toString()),
-          subtitle: Text(countryList[index].newDeaths.toString()),
-          );
-      }
-      ),
-    );
+      body: Center(
+          child: FutureBuilder<Countries>(
+            future: countries,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+             return ListView.builder(
+                    itemBuilder: (context,index){
+                    return ListTile(
+                      title: Text(snapshot.data.countrie[index].totalConfirmed.toString(),),
+                      subtitle: Text(snapshot.data.countrie[index].totalDeaths.toString(),
+                    ),
+                );
+                });
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
+          ),
+        ),
+      );
+    
   }
 
  Future<List<Countries>> _getApi() async {
