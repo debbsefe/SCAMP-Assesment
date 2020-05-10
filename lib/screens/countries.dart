@@ -11,9 +11,10 @@ class Country extends StatefulWidget {
 class _CountryState extends State<Country> {
   
 
-//List <Countries> countryList = new List();
+Future<List <Countries>> countryList ;
+//= new List();
 
-Future<Countries> countries;
+//Future<Countries>countries;
   void initState(){
     _getApi();
     super.initState();
@@ -23,18 +24,19 @@ Future<Countries> countries;
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: FutureBuilder<Countries>(
-            future: countries,
+          child: FutureBuilder<List<Countries>>(
+            future: countryList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
              return ListView.builder(
                     itemBuilder: (context,index){
                     return ListTile(
-                      title: Text(snapshot.data.countrie[index].totalConfirmed.toString(),),
-                      subtitle: Text(snapshot.data.countrie[index].totalDeaths.toString(),
-                    ),
+                      title: Text(snapshot.data.toList().toString()),
+                      //subtitle: Text(snapshot.data.[index],
+                    
                 );
-                });
+                }
+                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -48,13 +50,27 @@ Future<Countries> countries;
     
   }
 
- Future<List<Countries>> _getApi() async {
-    final endpoint = "https://api.covid19api.com/summary";
-    final response = await get(endpoint);
-    var jsonResponse = json.decode(response.body) as List;
-    return jsonResponse
-        .map((countryStats) => Countries.fromJson(countryStats))
-        .toList();
+Future <List<Countries>> _getApi() async {
+
+  
+      String url = "https://api.covid19api.com/summary";
+
+    final response = await get(url);
+    if(response.statusCode == 200){
+
+      List<dynamic> values = new List<dynamic>();
+      values = json.decode(response.body);
+      if(values.length>0){
+        var lst = response.body as List;
+        return lst.map((d) => Countries.fromJson(d)).toList();
+      }
+      //return countryList;
+
+    }else{
+      throw Exception('Failed to load country');
+
+    }
+
   }
     
 }
