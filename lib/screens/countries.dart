@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:scamp_assesment/models/model.dart';
 import 'package:http/http.dart';
 
-class Countries extends StatefulWidget {
+class Country extends StatefulWidget {
   @override
-  _CountriesState createState() => _CountriesState();
+  _CountryState createState() => _CountryState();
 }
 
-class _CountriesState extends State<Countries> {
+class _CountryState extends State<Country> {
   
 
-List <Summary> countryList = new List();
-  void initState(){
-    _getApi();
-    super.initState();
-  }
+// List <Countries> countryList = new List();
+//   void initState(){
+//     _getApi();
+//     super.initState();
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -23,35 +23,21 @@ List <Summary> countryList = new List();
       body: ListView.builder(
         itemCount: countryList.length, 
         itemBuilder: (context, index){
-          return ListTile(title: Text(countryList[index].global.toString()),
-          subtitle: Text(countryList[index].countries.toString()),
+          return ListTile(title: Text(countryList[index].totalConfirmed.toString()),
+          subtitle: Text(countryList[index].newDeaths.toString()),
           );
       }
       ),
     );
   }
 
-  Future<List<Summary>>_getApi() async {
-
-    try{
-      String url = "https://api.covid19api.com/summary";
-
-    Response response = await get(url);
-    final responseBody = response.body;
-    var responseList = json.decode(responseBody) as List;
-    List<Summary>listvalues = responseList.map((e) => Summary.fromJson(e)).toList();
-
-    setState(() {
-      countryList.addAll(listvalues);
-    });
-      return listvalues;
-
-      
-      }catch (e){
-        print(e.toString());
-        return null;
-      }
-
-    }
+ Future<List<Countries>> _getApi() async {
+    final endpoint = "https://api.covid19api.com/summary";
+    final response = await get(endpoint);
+    var jsonResponse = json.decode(response.body) as List;
+    return jsonResponse
+        .map((countryStats) => Countries.fromJson(countryStats))
+        .toList();
+  }
     
 }

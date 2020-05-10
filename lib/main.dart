@@ -46,11 +46,11 @@ DefaultTabController tabs(){
             child: Worldwide(),
           ),
           Container(
-            child: Countries()
+            child: Country()
           ),
         ],
       ),
-      drawerScrimColor: Colors.white,
+      drawerScrimColor: Colors.black,
       appBar: new TabBar(
         tabs: [
           Tab(
@@ -64,10 +64,10 @@ DefaultTabController tabs(){
               ),)
           ),
         ],
-        unselectedLabelColor: Colors.white,
+        unselectedLabelColor: Colors.grey,
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.blue,
       ),
       backgroundColor: Colors.black,
     ),
